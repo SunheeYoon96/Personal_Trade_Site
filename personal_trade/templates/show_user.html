@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <h5>
+            <a href="{{ url_for('index') }}">Go to Main</a>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>userID</th>
+                        <th>userPW</th>
+                        <th>userName</th>
+                        <th>userPhoneNum</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for user in USER %}
+                    <tr>
+                        <td>{{ user.userID }}</td>
+                        <td>{{ user.userPW }}</td>
+                        <td>{{ user.userName }}</td>
+                        <td>{{ user.userPhoneNum }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </h5>
+    </body>
+</html>
