@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>상품 상세페이지</title>
+</head>
+<body>
+    <h5>
+        <a href="{{ url_for('index') }}">Go to Main</a>
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>productCode</th>
+                    <th>productName</th>
+                    <th>productPicture</th>
+                    <th>productPrice</th>
+                    <th>productInfo</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>{{ product.productCode }}</td>
+                    <td>{{ product.productName }}</td>
+                    <td>{{ product.productPicture }}</td>
+                    <td>{{ product.productPrice }}</td>
+                    <td>{{ product.productInfo }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </h5>
+    
+</body>
+</html>
