@@ -4,7 +4,7 @@
         <h5>
             <a href="{{ url_for('index') }}">Go to Main</a>
 
-            <table>
+            <table border="1">
                 <thead>
                     <tr>
                         <th>productCode</th>
@@ -23,6 +23,7 @@
                         <td>{{ product.productPicture }}</td>
                         <td>{{ product.productPrice }}</td>
                         <td>{{ product.productInfo }}</td>
+                        <td><a href="{{ url_for('product_detail', productCode = product.productCode) }}">상세</a></td>
                     </tr>
                     {% endfor %}
                 </tbody>

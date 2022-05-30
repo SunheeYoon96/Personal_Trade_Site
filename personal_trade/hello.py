@@ -1,5 +1,6 @@
 from flask import Flask, flash, redirect, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
+from numpy import product
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Trade.sqlite3'
@@ -36,6 +37,7 @@ class PRODUCT(db.Model):
     productPicture = db.Column(db.String(200))
     productPrice = db.Column(db.Integer)
     productInfo = db.Column(db.Text)
+    productState = db.Column(db.String)
 
     def __init__(self,productName,productPicture,productPrice,productInfo ):
         self.productName = productName
@@ -88,6 +90,13 @@ def add_user():
             return redirect(url_for('show_user'))
     return render_template('add_user.html')
 
+##############################################
+## 상품상세페이지 ## by.윤선희
+#############################################
+@app.route('/product_detail/<productCode>', methods = ['GET', 'POST'])
+def product_detail(productCode):
+    update_product = PRODUCT.query.filter_by(productCode = productCode).first()
+    return render_template('product_detail.html', product = update_product)
 
 
 if __name__ == '__main__':
