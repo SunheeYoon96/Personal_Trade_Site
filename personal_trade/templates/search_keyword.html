@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>상품 상세페이지</title>
+    <title>상품검색</title>
 </head>
 <body>
+    
     <h5>
         <a href="{{ url_for('index') }}">Go to Main</a>
-        
         <br><br>
-
         <table border="1">
             <thead>
                 <tr>
@@ -18,7 +17,6 @@
                     <th>productPrice</th>
                     <th>productInfo</th>
                     <th>productState</th>
-                    <th>판매여부</th>
                 </tr>
             </thead>
 
@@ -29,12 +27,13 @@
                     <td>{{ product.productPicture }}</td>
                     <td>{{ product.productPrice }}</td>
                     <td>{{ product.productInfo }}</td>
-                    <td id="state">{{ product.productState }}</td>
-                    <td><a href="{{ url_for('buy', productCode = product.productCode) }}"><input type="button" id="btnBuy" value="구매"></a></td>
-                </tr>
+                    <td>{{ product.productState }}</td>
+                    <td><a href="{{ url_for('product_detail', productCode = product.productCode) }}">상세</a></td>
+                </tr>                
+                
             </tbody>
         </table>
     </h5>
-    
+
 </body>
 </html>
