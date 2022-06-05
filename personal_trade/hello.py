@@ -1,3 +1,4 @@
+from turtle import update
 from flask import Flask, flash, redirect, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 from numpy import product
@@ -97,6 +98,35 @@ def add_user():
 def product_detail(productCode):
     update_product = PRODUCT.query.filter_by(productCode = productCode).first()
     return render_template('product_detail.html', product = update_product)
+
+##############################################
+## 구매확인페이지 ## by.윤선희
+#############################################
+@app.route('/buy/<productCode>', methods = ['GET', 'POST'])
+def buy(productCode):
+    buy_product = PRODUCT.query.filter_by(productCode = productCode).first()
+    buy_product.productState = "SOLD"
+    db.session.commit()
+
+    #flash('Record state was successfully updated')
+    #return redirect(url_for('buy', productCode = buy_product.productCode))
+    #productCode = buy_product.productCode
+    #return render_template('product_detail.html', product = buy_product)
+    
+    return render_template('buy.html', product = buy_product)
+
+##############################################
+## 상품검색페이지 ## by.윤선희
+#############################################
+@app.route('/search_keyword/<key_search>', methods = ['GET'])
+def search_keyword(key_search):
+    if request.method == 'GET':
+        #kw = request.form.get['key_search']
+        search_product = PRODUCT.query.filter_by(productName = key_search).first()
+    else:
+        search_product = PRODUCT.query.all()
+
+    return render_template('search_keyword.html', product = search_product)
 
 
 if __name__ == '__main__':

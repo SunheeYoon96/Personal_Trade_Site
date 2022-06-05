@@ -3,6 +3,13 @@
     <body>
         <h5>
             <a href="{{ url_for('index') }}">Go to Main</a>
+            <br><br>
+
+            <form action="{{ url_for('search_keyword', key_search = 'key_search' ) }}" method="GET">
+                <input type="text" name="key_search" placeholder="검색어를 입력하세요">
+                <input type="submit" value="search">
+            </form>
+            <br><br>
 
             <table border="1">
                 <thead>
@@ -12,6 +19,7 @@
                         <th>productPicture</th>
                         <th>productPrice</th>
                         <th>productInfo</th>
+                        <th>productState</th>
                     </tr>
                 </thead>
 
@@ -23,9 +31,12 @@
                         <td>{{ product.productPicture }}</td>
                         <td>{{ product.productPrice }}</td>
                         <td>{{ product.productInfo }}</td>
+                        <td>{{ product.productState }}</td>
                         <td><a href="{{ url_for('product_detail', productCode = product.productCode) }}">상세</a></td>
                     </tr>
                     {% endfor %}
+                    
+                    
                 </tbody>
             </table>
         </h5>
