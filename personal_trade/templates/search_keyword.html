@@ -19,7 +19,7 @@
                     <th>productState</th>
                 </tr>
             </thead>
-
+            {% for product in search_product %}
             <tbody>
                 <tr>
                     <td>{{ product.productCode }}</td>
@@ -30,7 +30,7 @@
                     <td>{{ product.productState }}</td>
                     <td><a href="{{ url_for('product_detail', productCode = product.productCode) }}">상세</a></td>
                 </tr>                
-                
+            {%endfor%}    
             </tbody>
         </table>
     </h5>

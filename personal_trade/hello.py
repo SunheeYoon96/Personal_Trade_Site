@@ -118,15 +118,24 @@ def buy(productCode):
 ##############################################
 ## 상품검색페이지 ## by.윤선희
 #############################################
-@app.route('/search_keyword/<key_search>', methods = ['GET'])
+@app.route('/search_keyword/<key_search>', methods = ['GET','POST'])
 def search_keyword(key_search):
-    if request.method == 'GET':
-        #kw = request.form.get['key_search']
-        search_product = PRODUCT.query.filter_by(productName = key_search).first()
+    if key_search == 'key_search':
+        kw = request.form['key_search']
+        return redirect(url_for('search_keyword', key_search=kw))
     else:
-        search_product = PRODUCT.query.all()
+        #search_product = PRODUCT.query.all()
+        search_product = PRODUCT.query.filter_by(productName=key_search)
+        return render_template('search_keyword.html', search_product = search_product, key_search=key_search )
 
-    return render_template('search_keyword.html', product = search_product)
+
+    #if request.method == 'GET':
+        #kw = request.form.get['key_search']
+    #    search_product = PRODUCT.query.filter_by(productName = key_search).first()
+    #else:
+    #    search_product = PRODUCT.query.all()
+
+    #return render_template('search_keyword.html', product = search_product)
 
 
 if __name__ == '__main__':
