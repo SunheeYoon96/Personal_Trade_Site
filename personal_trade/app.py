@@ -221,7 +221,7 @@ def log_out():
     return redirect(url_for('index'))
 
 ################################################
-# 수정 부분 마지막 
+# 수정 부분 마지막 //상민
 ################################################
 @app.route('/add_product', methods=['GET', 'POST'])
 def add_product():
