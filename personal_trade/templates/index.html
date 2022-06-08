@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <header>
+            {%if 'userID' not in session%}
+                <input type='button' value='sign up' class='button' style='right: 25%' onclick="location.href='{{url_for('add_user')}}'">
+                <input type='button' value='sign in' class='button' style='right: 15%' onclick="location.href='{{url_for('sign_in')}}'">
+            {%else%}
+                <div class='button' style='right: 25%; text-align:end;'>Welcome! <br><b>{{session['userID']}}</b>님</div>
+                <input type='button' value='log out' class='button' style='right: 15%' onclick="location.href='{{url_for('log_out')}}'">
+                {%endif%}
+        </header>
+        <h5>
+            <a href="{{ url_for('add_user')  }}">Add user</a>
+        </h5>
+        <br>
+        <h5>
+            <a href="{{ url_for('show_user')  }}">Show user</a>
+        </h5>
+        <br>
+        <h5>
+            <a href="{{ url_for('add_product') }}">Show product</a>
+        </h5>
+        <br>
+
+        <h5>
+            <a href="{{ url_for('show_product') }}">Show product</a>
+        </h5>
+        <br>
+        
+    </body>
+</html>
