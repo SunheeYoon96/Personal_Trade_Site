@@ -1,37 +1,112 @@
 <!DOCTYPE html>
 <html>
+<head>
+
+    <!-- Webpage Title -->
+    <title>Hello, Cucumber Market!</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- JS -->   
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'index.css') }}">
+
+
+    <!--flash 메세지를 보여주기 위한 프로세스-->
+    {% with messages=get_flashed_messages()%}
+    {% if messages %}
+        <script>
+            alert("{{messages[-1]}}")
+        </script>
+    {% endif %}
+    {%endwith%}
+
+    </head>
     <body>
         <header>
+            <a href='{{ url_for('index') }}'>
+                    <img class='logo' src="{{ url_for('static', filename = 'logo.png') }}">
+                </a>
+                <br><br>
             {%if 'userID' not in session%}
-                <input type='button' value='sign up' class='button' style='float: right;' onclick="location.href='{{url_for('add_user')}}'">
-                <input type='button' value='sign in' class='button' style='float: right;' onclick="location.href='{{url_for('sign_in')}}'">
+            <div class='sign_btn'>
+                <input type='button' value='sign up' class='button' onclick="location.href='{{url_for('add_user')}}'">
+                <!-- <input type='button' value='sign in' class='button' onclick="location.href='{{url_for('sign_in')}}'"> -->
+            </div>
             {%else%}
-                <div class='button' style='right: 25%; text-align:end;'>Welcome! <br><b>{{session['userID']}}</b>님</div>
-                <input type='button' value='log out' class='button' style='right: 15%' onclick="location.href='{{url_for('log_out')}}'">
-                {%endif%}
+            <div>
+                <div class='user_profile'>Welcome! <b>{{session['userID']}}</b>님</div>
+                <input class='logout'type='button' value='log out' onclick="location.href='{{url_for('log_out')}}'">
+            {%endif%}
+            </div>    
         </header>
-        
-        <h1 style="color: darkgreen; text-align : center;">Personal Trade Site</h1>
-        <img class='logo1' style="width: 500px; height: 200px; display: block; margin: 0px auto;" src="{{ url_for('static', filename = 'logo1.png') }}">
-        <h5>
-            <a href="{{ url_for('add_user')  }}">Add user</a>
-        </h5>
-        <br>
-        <h5>
-            <a href="{{ url_for('show_user')  }}">Show user</a>
-        </h5>
-        <br>
-        <h5>
-            <a href="{{ url_for('add_product') }}">Show product</a>
-        </h5>
-        <br>
+        <br><br><br><br>
+        <nav>
+            <ul class='category'>                
+                <li class='menu'><a id='menu_font' href="{{ url_for('add_user')  }}">Add user</a></li>
+                <li class='menu'><a id='menu_font' href="{{ url_for('show_user')  }}">Show user</a></li> 
+                <li class='menu'><a id='menu_font' href="{{ url_for('add_product') }}">Add product</a></li>
+                <li class='menu'><a id='menu_font' href="{{ url_for('show_product') }}">Show product</a></li> 
+            </ul>
+        </nav>
+        <div>
+            <br>
+            {%if 'userID' not in session%}
+                <form class='signinsection' action="{{url_for('sign_in')}}" method='POST'>
+                    <input name='userID' type='text' class='txt' placeholder='id' size='10'>
+                    <input name='userPW' type='text'class='txt'  placeholder='password' size='13'>
+                    <input type='submit' class='btn' value= "Login">
+                </form>
+            {%endif%}   
+            <form class='search' action="{{ url_for('search_keyword', key_search = 'key_search' ) }}" method="POST">
+                <input  type="text" name="key_search" placeholder="검색어를 입력하세요">
+                <input type="submit" value="search">
+            </form>
+            <br><br>
 
-        <h5>
-            <a href="{{ url_for('show_product') }}">Show product</a>
-        </h5>
-        <br>
-
-        
-        
+            <table class="table">
+              <thead class="thead-dark">
+                <tr>
+                    <th>productPicture</th>
+                    <th>productCode</th>
+                    <th>productName</th>
+                    <th>productPrice</th>
+                    <th>productInfo</th>
+                    <th>productState</th>
+                    <th>&nbsp;</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for product in PRODUCT %}
+                <tr class="alert" role="alert">
+                    <td><img src="{{ url_for('static', filename = '/uploads/' + product.productPicture) }}"></td>
+                    <td>{{ product.productCode }}</td>
+                    <td>{{ product.productName }}</td>
+                    <td>{{ product.productPrice }}</td>
+                    <td>{{ product.productInfo }}</td>
+                    <td>{{ product.productState }}</td>
+                    <td><a href="{{ url_for('product_detail', productCode = product.productCode) }}">상세</a></td>
+                    <td>
+                        <a href="#" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true"><i class="fa fa-close"></i></span>
+                        </a>
+                    </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+                            
+        </div>
     </body>
 </html>
