@@ -1,0 +1,35 @@
+.profile{
+	text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+table{
+    margin-left:auto; 
+    margin-right:auto;
+    border:3px solid skyblue;
+}
+
+td{
+    border:1px solid skyblue;
+}
+
+#title{
+    background-color:skyblue;
+    font-weight: 500;
+}
+
+.button_location{
+    text-align: center;
+}
+
+.submit_button{
+    display: inline-block;
+    align-items: center;           
+}
+
+.cancel_button{
+    display: inline-block;
+    align-items: center;
+    margin-left: 5px;            
+}
