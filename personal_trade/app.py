@@ -242,7 +242,7 @@ def add_product():
 @app.route('/show_product')
 def show_product():
     return render_template('show_product.html', PRODUCT=PRODUCT.query.all())
-
+    # 06.09 여기에 css 입힌 html 기준으로 'index.html' 쓰시면 메인 페이지에 프로덕트 불러오게 만들었습니다!
 
 ################################
 
