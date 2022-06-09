@@ -1,14 +1,16 @@
 from turtle import update
 from flask import Flask, flash, redirect, render_template, request, url_for, session
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.utils import secure_filename
+import os
 
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Trade.sqlite3'
 app.config['SECRET_KEY'] = "abcdefg anything"
+app.config['UPLOAD_FOLDER']='./personal_trade/static/uploads/' # 상품 이미지 파일이 저장되는 경로
 
 db = SQLAlchemy(app)
-
 
 class USER(db.Model):
     # idx = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
@@ -221,23 +223,24 @@ def log_out():
     return redirect(url_for('index'))
 
 ################################################
-# 수정 부분 마지막 //상민
+###상품 추가 by 윤선희
 ################################################
-@app.route('/add_product', methods=['GET', 'POST'])
+@app.route('/add_product', methods = ['GET', 'POST'])
 def add_product():
     if request.method == 'POST':
         if not request.form['productName'] or not request.form['productPrice']:
             flash('Please enter all the fields', 'error')
         else:
-            product = PRODUCT(request.form['productName'], request.form['productPicture'], request.form['productPrice'],
-                              request.form['productInfo'])
+            f1 = request.files['productPicture']
+            registerf1 = secure_filename(f1.filename)
+            f1.save(os.path.join(app.config['UPLOAD_FOLDER'],registerf1))
+            product = PRODUCT(request.form['productName'], registerf1, request.form['productPrice'], request.form['productInfo'])
             db.session.add(product)
             db.session.commit()
 
             flash('Record was successfully added')
             return redirect(url_for('show_product'))
     return render_template('add_product.html')
-
 
 @app.route('/show_product')
 def show_product():
@@ -269,26 +272,54 @@ def buy(productCode):
     buy_product.productState = "SOLD"
     db.session.commit()
 
-    # flash('Record state was successfully updated')
-    # return redirect(url_for('buy', productCode = buy_product.productCode))
-    # productCode = buy_product.productCode
-    # return render_template('product_detail.html', product = buy_product)
-
     return render_template('buy.html', product=buy_product)
 
 
 ##############################################
 ## 상품검색페이지 ## by.윤선희
 #############################################
-@app.route('/search_keyword/<key_search>', methods=['GET'])
+@app.route('/search_keyword/<key_search>', methods = ['GET','POST'])
 def search_keyword(key_search):
-    if request.method == 'GET':
-        # kw = request.form.get['key_search']
-        search_product = PRODUCT.query.filter_by(productName=key_search).first()
+    if key_search == 'key_search':
+        kw = request.form['key_search']
+        return redirect(url_for('search_keyword', key_search=kw))
     else:
-        search_product = PRODUCT.query.all()
+        #search_product = PRODUCT.query.all()
+        search_product = PRODUCT.query.filter_by(productName=key_search)
+        return render_template('search_keyword.html', search_product = search_product, key_search=key_search )
 
-    return render_template('search_keyword.html', product=search_product)
+# 수정 페이지 랜더링
+@app.route('/edit_product/<productCode>', methods=['GET','POST'])
+def edit_product(productCode):
+    # id에 해당하는 DB를 가져온다.
+    product=PRODUCT.query.filter_by(productCode=productCode).first()
+    return render_template('edit_product.html', productCode=productCode, productName = product.productName, productPrice=product.productPrice, productPicture=product.productPrice, productInfo = product.productInfo) 
+
+##############################################
+## 상품수정페이지 ## by.윤선희
+#############################################
+@app.route('/update/<productCode>', methods = ['GET', 'POST'])
+def update(productCode):
+    if request.method == 'POST':
+        if not request.form['productName'] or not request.form['productPrice']:
+            flash('Please enter all the fields', 'error')
+        else:
+            f1 = request.files['productPicture']
+            registerf1 = secure_filename(f1.filename)
+            f1.save(os.path.join(app.config['UPLOAD_FOLDER'],registerf1))
+            #product = PRODUCT(request.form['productName'], registerf1, request.form['productPrice'], request.form['productInfo'])
+        
+        product = PRODUCT.query.filter_by(productCode=productCode).first()
+        product.productCode = productCode
+        product.productName = request.form['productName']
+        product.productPicture = registerf1
+        product.productPrice = request.form['productPrice']
+        product.productInfo = request.form['productInfo']
+        db.session.commit()
+
+        flash('Record was successfully added')
+        return redirect(url_for('product_detail', productCode=productCode))
+
 
 
 if __name__ == '__main__':
