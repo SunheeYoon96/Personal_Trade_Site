@@ -36,7 +36,7 @@
     <body>
         <header>
             <a href='{{ url_for('index') }}'>
-                    <img class='logo' src="{{ url_for('static', filename = 'logo.png') }}">
+                    <img class='logo' src="{{ url_for('static', filename = 'logo.png')}}" style="width:500px; height:200px" >
                 </a>
                 <br><br>
             {%if 'userID' not in session%}
@@ -54,14 +54,14 @@
         <br><br><br><br>
         <nav>
             <ul class='category'>                
-                <li class='menu'><a id='menu_font' href="{{ url_for('add_user')  }}">Add user</a></li>
-                <li class='menu'><a id='menu_font' href="{{ url_for('show_user')  }}">Show user</a></li> 
-                <li class='menu'><a id='menu_font' href="{{ url_for('add_product') }}">Add product</a></li>
-                <li class='menu'><a id='menu_font' href="{{ url_for('show_product') }}">Show product</a></li> 
+                <li class='menu'><a id='menu_font' href="{{ url_for('add_user')  }}" style = "color:rgb(26, 42, 17)">Add user</a></li>
+                <li class='menu'><a id='menu_font' href="{{ url_for('show_user')  }}" style = "color:rgb(26, 42, 17)">Show user</a></li> 
+                <li class='menu'><a id='menu_font' href="{{ url_for('add_product') }}" style = "color:rgb(26, 42, 17)">Add product</a></li>
+                <li class='menu'><a id='menu_font' href="{{ url_for('show_product') }}" style = "color:rgb(26, 42, 17)">Show product</a></li> 
             </ul>
         </nav>
-        <div>
-            <br>
+        <div id="index_body">
+           
             {%if 'userID' not in session%}
                 <form class='signinsection' action="{{url_for('sign_in')}}" method='POST'>
                     <input name='userID' type='text' class='txt' placeholder='id' size='10'>
@@ -73,20 +73,10 @@
                 <input  type="text" name="key_search" placeholder="검색어를 입력하세요">
                 <input type="submit" value="search">
             </form>
-            <br><br>
+           
 
             <table class="table">
-              <thead class="thead-dark">
-                <tr>
-                    <th>productPicture</th>
-                    <th>productCode</th>
-                    <th>productName</th>
-                    <th>productPrice</th>
-                    <th>productInfo</th>
-                    <th>productState</th>
-                    <th>&nbsp;</th>
-                </tr>
-              </thead>
+              
               <tbody>
                 {% for product in PRODUCT %}
                 <tr class="alert" role="alert">

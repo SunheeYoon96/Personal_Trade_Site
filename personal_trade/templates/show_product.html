@@ -1,14 +1,73 @@
 <!DOCTYPE html>
 <html>
+    <head>
+
+        <!-- Webpage Title -->
+        <title>Hello, Cucumber Market!</title>
+    
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+        <!-- JS -->   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
+        <!-- 구글폰트 -->
+        <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+    
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'index.css') }}">
+    
+    
+        <!--flash 메세지를 보여주기 위한 프로세스-->
+        {% with messages=get_flashed_messages()%}
+        {% if messages %}
+            <script>
+                alert("{{messages[-1]}}")
+            </script>
+        {% endif %}
+        {%endwith%}
+    
+        </head>
     <body>
+        <header>
+            <a href='{{ url_for('index') }}'>
+                    <img class='logo' src="{{ url_for('static', filename = 'logo.png') }}" style="width:500px; height:200px">
+                </a>
+                <br><br>
+            {%if 'userID' not in session%}
+            <div class='sign_btn'>
+                <input type='button' value='sign up' class='button' onclick="location.href='{{url_for('add_user')}}'">
+                <!-- <input type='button' value='sign in' class='button' onclick="location.href='{{url_for('sign_in')}}'"> -->
+            </div>
+            {%else%}
+            <div>
+                <div class='user_profile'>Welcome! <b>{{session['userID']}}</b>님</div>
+                <input class='logout'type='button' value='log out' onclick="location.href='{{url_for('log_out')}}'">
+            {%endif%}
+            </div>    
+        </header>
+        
         <h5>
             <a href="{{ url_for('index') }}">Go to Main</a>
-            <br><br>
+            <br><br><br><br>
+        <nav>
+            <ul class='category'>                
+                <li class='menu'><a id='menu_font' href="{{ url_for('add_user')  }}" style = "color:rgb(26, 42, 17)">Add user</a></li>
+                <li class='menu'><a id='menu_font' href="{{ url_for('show_user')  }}" style = "color:rgb(26, 42, 17)">Show user</a></li> 
+                <li class='menu'><a id='menu_font' href="{{ url_for('add_product') }}" style = "color:rgb(26, 42, 17)">Add product</a></li>
+                <li class='menu'><a id='menu_font' href="{{ url_for('show_product') }}" style = "color:rgb(26, 42, 17)">Show product</a></li> 
+            </ul>
+        </nav>
 
-            <form action="{{ url_for('search_keyword', key_search = 'key_search' ) }}" method="POST">
-                <input type="text" name="key_search" placeholder="검색어를 입력하세요">
-                <input type="submit" value="search">
-            </form>
+        <form class='search' action="{{ url_for('search_keyword', key_search = 'key_search' ) }}" method="POST">
+            <input  type="text" name="key_search" placeholder="검색어를 입력하세요">
+            <input type="submit" value="search">
+        </form>
             <br><br>
 
             <table border="1">
