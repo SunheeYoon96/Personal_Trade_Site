@@ -26,34 +26,44 @@
     
     <body>
         <header>
-            <a href='{{ url_for('main_page.html') }}'>
-                <img class='logo' src="{{ url_for('static', filename = 'logo.png') }}">
-            </a>
+            <a href='{{ url_for('index') }}'>
+                    <img class='logo' src="{{ url_for('static', filename = 'logo.png') }}">
+                </a>
+                <br><br>
+            {%if 'userID' not in session%}
+            <div class='sign_btn'>
+                <input type='button' value='sign up' class='button' onclick="location.href='{{url_for('add_user')}}'">
+                <!-- <input type='button' value='sign in' class='button' onclick="location.href='{{url_for('sign_in')}}'"> -->
+            </div>
+            {%else%}
+            <div>
+                <div class='user_profile'>Welcome! <b>{{session['userID']}}</b>님</div>
+                <input class='logout'type='button' value='log out' onclick="location.href='{{url_for('log_out')}}'">
+            {%endif%}
+            </div>    
         </header>
+
         <nav>
             <ul>
-                <li><a href='{{url_for('search', keyword='all')}}'>상품 구경</a></li>
                 {%if 'userID' in session%}
-                    <li><a href='{{url_for('uploadProduct')}}'>상품 등록</a></li>
-                    <li><a href='{{url_for('follow', userName=session['userName'])}}'>팔로잉 보기</a></li>
+                    <li><a href='{{url_for('follow', userID=session['userID'])}}'>팔로잉 보기</a></li>
                 {%else%}
-                    <li><a href='{{url_for('warning', type='add_product')}}'>상품 등록</a></li>
                     <li><a href='{{url_for('warning', type='follow')}}'>팔로잉 보기</a></li>
                 {%endif%}
             </ul>
         </nav>
         <div class='body'>
             <div class='body' style='width:70%; height:10%; left:15%; background-color:white; top:0%;'>
-                <div class='body' style='width:60%; height:50%; left:15%; background-color:white; top:25%; font-size:large;'>{{userName}}님의 상품 목록</div>
-                {%if session['userName']!=userName and follow.count()==0%}
-                <form action='{{url_for('following',userName=userName)}}' method='POST'>
+                <div class='body' style='width:60%; height:50%; left:15%; background-color:white; top:25%; font-size:large;'>{{userID}}님의 상품 목록</div>
+                {%if session['userID']!=userID and follow.count()==0%}
+                <form action='{{url_for('following',userID=userID)}}' method='POST'>
                     <input type='submit' value='팔로우 하기' class='soldOutBtn'>
                 </form>
                 {%endif%}
             </div>
         <div class='body'>
             <div class='body' style='width:70%; height:10%; left:15%; background-color:white; top:0%;'>
-                <div class='body' style='width:60%; height:50%; left:15%; background-color:white; top:25%; font-size:large;'>{{session['userName']}}님의 팔로잉 목록</div>
+                <div class='body' style='width:60%; height:50%; left:15%; background-color:white; top:25%; font-size:large;'>{{session['userID']}}님의 팔로잉 목록</div>
             </div>
             <div class='body' style='width:70%; height:90%; left:15%; background-color:white; top:10%; overflow-y:scroll;'>
 
@@ -63,10 +73,10 @@
                 {%endif%}
 
                 {%for relation in follow%}
-                <a href='{{url_for('profile',userName=relation.followPara1)}}'>
+                <a href='{{url_for('profile',userID=relation.followee)}}'>
                 <div class='container'>
                       
-                        <div class='followPara1'>{{relation.followPara1}}</div>
+                        <div class='followee'>{{relation.followee}}</div>
                     
                     <hr></hr>
                     
