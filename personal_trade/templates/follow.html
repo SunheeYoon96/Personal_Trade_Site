@@ -46,7 +46,7 @@
         <nav>
             <ul>
                 {%if 'userID' in session%}
-                    <li><a href='{{url_for('follow', userID=session['userID'])}}'>팔로잉 보기</a></li>
+                    <li><a href='{{url_for('follow', productSeller = session['userID'])}}'>팔로잉 보기</a></li>
                 {%else%}
                     <li><a href='{{url_for('warning', type='follow')}}'>팔로잉 보기</a></li>
                 {%endif%}
@@ -54,9 +54,9 @@
         </nav>
         <div class='body'>
             <div class='body' style='width:70%; height:10%; left:15%; background-color:white; top:0%;'>
-                <div class='body' style='width:60%; height:50%; left:15%; background-color:white; top:25%; font-size:large;'>{{userID}}님의 상품 목록</div>
-                {%if session['userID']!=userID and follow.count()==0%}
-                <form action='{{url_for('following',userID=userID)}}' method='POST'>
+                <div class='body' style='width:60%; height:50%; left:15%; background-color:white; top:25%; font-size:large;'>{{productSeller}}님의 상품 목록</div>
+                {%if session['userID']!= productSeller and follow.count()==0%}
+                <form action='{{url_for('following', productSeller=productSeller) }}' method='POST'>
                     <input type='submit' value='팔로우 하기' class='soldOutBtn'>
                 </form>
                 {%endif%}
@@ -73,7 +73,7 @@
                 {%endif%}
 
                 {%for relation in follow%}
-                <a href='{{url_for('profile',userID=relation.followee)}}'>
+                <a href='{{url_for('profile', productSeller =relation.followee)}}'>
                 <div class='container'>
                       
                         <div class='followee'>{{relation.followee}}</div>

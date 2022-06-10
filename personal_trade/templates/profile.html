@@ -59,15 +59,15 @@
                 <li class='menu'><a id='menu_font' href="{{ url_for('show_user')  }}">Show user</a></li> 
                 <li class='menu'><a id='menu_font' href="{{ url_for('add_product') }}">Add product</a></li>
                 <li class='menu'><a id='menu_font' href="{{ url_for('show_product') }}">Show product</a></li> 
-                <li class='menu'><a id='menu_font' href="{{ url_for('follow', userID=session['userID']) }}">Follow</a></li>
+                <li class='menu'><a id='menu_font' href="{{ url_for('follow', productSeller=session['userID']) }}">Follow</a></li>
             </ul>
         </nav>
 
         <div class='body'>
             <div class='body' style='width:70%; height:10%; left:15%; background-color:white; top:0%;'>
-                <div class='body' style='width:60%; height:50%; left:15%; background-color:white; top:25%; font-size:large;'>{{userID}}님의 상품 목록</div>
-                {%if session['userID']!=userID and follow.count()==0%}
-                <form action='{{url_for('following',userID=userID)}}' method='POST'>
+                <div class='body' style='width:60%; height:50%; left:15%; background-color:white; top:25%; font-size:large;'>{{productSeller}}님의 상품 목록</div>
+                {%if session['userID']!=productSeller and follow.count()==0%}
+                <form action='{{url_for('following', productSeller=productSeller)}}' method='POST'>
                     <input type='submit' value='팔로우 하기' class='soldOutBtn'>
                 </form>
                 {%endif%}
@@ -85,9 +85,9 @@
                             <th>productState</th>
                         </tr>
                     </thead>
-    
+                    
                     <tbody>
-                        {% for product in PRODUCT %}
+                        {% for product in product %}
                         <tr>
                             <td>{{ product.productCode }}</td>
                             <td>{{ product.productName }}</td>
