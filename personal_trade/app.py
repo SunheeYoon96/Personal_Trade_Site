@@ -18,22 +18,12 @@ class USER(db.Model):
     userPW = db.Column(db.String(50))
     userName = db.Column(db.String(100))
     userPhoneNum = db.Column(db.String(50))
-    followPara1 = db.Column(db.String(30))
-    followPara2 = db.Column(db.String(30))
-    followPara3 = db.Column(db.String(30))
-    followPara4 = db.Column(db.String(30))
-    followPara5 = db.Column(db.String(30))
 
     def __init__(self, userID, userPW, userName, userPhoneNum):
         self.userID = userID
         self.userPW = userPW
         self.userName = userName
         self.userPhoneNum = userPhoneNum
-        # self.followPara1 = followPara1
-        # self.followPara2 = followPara2
-        # self.followPara3 = followPara3
-        # self.followPara4 = followPara4
-        # self.followPara5 = followPara5
 
 
 class PRODUCT(db.Model):
@@ -42,13 +32,24 @@ class PRODUCT(db.Model):
     productPicture = db.Column(db.String(200))
     productPrice = db.Column(db.Integer)
     productInfo = db.Column(db.Text)
-    productState = db.Column(db.String)
+    productState = db.Column(db.String(50))
+    productSeller = db.Column(db.String(200))
 
-    def __init__(self, productName, productPicture, productPrice, productInfo):
+    def __init__(self, productName, productPicture, productPrice, productInfo, productState, productSeller):
         self.productName = productName
         self.productPicture = productPicture
         self.productPrice = productPrice
         self.productInfo = productInfo
+        self.productSeller = productSeller
+
+class follows(db.Model):
+    id=db.Column(db.Integer, primary_key=True,unique=True,autoincrement=True)
+    follower=db.Column(db.String(30), nullable=False)
+    followee=db.Column(db.String(30), nullable=False)
+    
+    def __init__(self, follower, followee):
+        self.follower=follower
+        self.followee=followee
 
 
 ################################################
@@ -234,7 +235,8 @@ def add_product():
             f1 = request.files['productPicture']
             registerf1 = secure_filename(f1.filename)
             f1.save(os.path.join(app.config['UPLOAD_FOLDER'],registerf1))
-            product = PRODUCT(request.form['productName'], registerf1, request.form['productPrice'], request.form['productInfo'])
+            productState=''
+            product = PRODUCT(request.form['productName'], registerf1, request.form['productPrice'], request.form['productInfo'],productState,session['userID'])
             db.session.add(product)
             db.session.commit()
 
@@ -320,7 +322,27 @@ def update(productCode):
         flash('Record was successfully added')
         return redirect(url_for('product_detail', productCode=productCode))
 
+######################################
+# 사용자별 상품 목록
+#######################################
+@app.route('/profile/<productSeller>',methods=['GET','POST'])
+def profile(productSeller):
+    # 판매자로 DB 가져오기
+    product=PRODUCT.query.filter_by(productSeller=productSeller)
+    # 팔로잉 유무를 확인하기 위해 로그인한 사용자와의 관계를 DB 에서 가져오기
+    follow=follows.query.filter_by(f_follower=session['userID'],f_followee=productSeller)
+    # 결과를 이용해 프로필 페이지 랜더링
+    return render_template('profile.html', product=product, productSeller=productSeller, follow=follow)
 
+###############################
+# 팔로우 페이지 라우팅
+##################################
+@app.route('/follow/<productSeller>',methods=['GET','POST'])
+def follow(productSeller):
+    # 팔로워의 닉네임을 이용해 DB 가져오기
+    follow=follows.query.filter_by(follower=productSeller)
+    # 결과를 이용해 팔로잉 페이지 랜더링
+    return render_template('follow.html', follow=follow)
 
 if __name__ == '__main__':
     db.create_all()

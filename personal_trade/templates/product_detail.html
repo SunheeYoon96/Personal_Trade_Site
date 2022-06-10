@@ -36,6 +36,7 @@
                     <th>productPrice</th>
                     <th>productInfo</th>
                     <th>productState</th>
+                    <th>productSeller</th>
                     <th>판매여부</th>
                 </tr>
             </thead>
@@ -44,10 +45,11 @@
                 <tr>
                     <td>{{ product.productCode }}</td>
                     <td>{{ product.productName }}</td>
-                    <td>{{ product.productPicture }}</td>
+                    <td><img src="{{ url_for('static', filename = '/uploads/' + product.productPicture) }}"></td>
                     <td>{{ product.productPrice }}</td>
                     <td>{{ product.productInfo }}</td>
                     <td id="state">{{ product.productState }}</td>
+                    <td><a href="{{ url_for('profile', productSeller = product.productSeller) }}">{{ product.productSeller }}</a></td>
                     <td><a href="{{ url_for('buy', productCode = product.productCode) }}"><input type="button" id="btnBuy" value="구매"></a></td>
                     <td>
                         <form action="{{ url_for('edit_product', productCode=product.productCode) }}" method='POST'>
