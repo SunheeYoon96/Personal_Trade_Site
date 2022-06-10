@@ -330,7 +330,7 @@ def profile(productSeller):
     # 판매자로 DB 가져오기
     product=PRODUCT.query.filter_by(productSeller=productSeller)
     # 팔로잉 유무를 확인하기 위해 로그인한 사용자와의 관계를 DB 에서 가져오기
-    follow=follows.query.filter_by(f_follower=session['userID'],f_followee=productSeller)
+    follow=follows.query.filter_by(follower=session['userID'],followee=productSeller)
     # 결과를 이용해 프로필 페이지 랜더링
     return render_template('profile.html', product=product, productSeller=productSeller, follow=follow)
 
@@ -343,6 +343,20 @@ def follow(productSeller):
     follow=follows.query.filter_by(follower=productSeller)
     # 결과를 이용해 팔로잉 페이지 랜더링
     return render_template('follow.html', follow=follow)
+
+####################################
+### 팔로잉
+#################################
+@app.route('/following/<productSeller>',methods=['GET','POST'])
+def following(productSeller):
+    # DB 생성후 추가
+    follow=follows(session['userID'], productSeller)
+    db.session.add(follow)
+    db.session.commit()
+    flash('팔로잉을 성공했습니다.')
+    # 팔로잉 결과를 확인할 수 있도록 팔로우 페이지 로드
+    return redirect(url_for('follow',productSeller=session['userID']))
+
 
 if __name__ == '__main__':
     db.create_all()

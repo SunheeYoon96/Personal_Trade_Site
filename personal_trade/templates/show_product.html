@@ -33,7 +33,7 @@
                         <td>{{ product.productPrice }}</td>
                         <td>{{ product.productInfo }}</td>
                         <td>{{ product.productState }}</td>
-                        <td><a href="{{ url_for('follow', productSeller = product.productSeller) }}">{{product.productSeller}}</a></td>
+                        <td><a href="{{ url_for('profile', productSeller = product.productSeller) }}">{{product.productSeller}}</a></td>
                         <td><a href="{{ url_for('product_detail', productCode = product.productCode) }}">상세</a></td>
                     </tr>
                     {% endfor %}
