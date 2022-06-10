@@ -18,7 +18,7 @@
     <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ url_for('static', filename = 'add_user.css') }}">
-    
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'index.css') }}">
     <script type="text/javascript">
 
       
@@ -36,10 +36,42 @@
         
    </script>
     
-    </head>
-    <body>
+  </head>
+  <body>
+    <header>
+      <a href='{{ url_for('index') }}'>
+              <img class='logo' src="{{ url_for('static', filename = 'logo.png')}}" style="width:500px; height:200px" >
+          </a>
+          <br><br>
+      {%if 'userID' not in session%}
+      <div class='sign_btn'>
+          <input type='button' value='sign up' class='button' onclick="location.href='{{url_for('add_user')}}'">
+          <!-- <input type='button' value='sign in' class='button' onclick="location.href='{{url_for('sign_in')}}'"> -->
+      </div>
+      {%else%}
+      <div>
+          <div class='user_profile'>Welcome! <b>{{session['userID']}}</b>님</div>
+          <input class='logout'type='button' value='log out' onclick="location.href='{{url_for('log_out')}}'">
+      {%endif%}
+      </div>    
+    </header>
+    <br><br><br><br>
+    <nav>
+      <ul class='category'>                
+          <li class='menu'><a id='menu_font' href="{{ url_for('add_user')  }}" style = "color:rgb(26, 42, 17)">Add user</a></li>
+          <li class='menu'><a id='menu_font' href="{{ url_for('show_user')  }}" style = "color:rgb(26, 42, 17)">Show user</a></li> 
+          <li class='menu'><a id='menu_font' href="{{ url_for('add_product') }}" style = "color:rgb(26, 42, 17)">Add product</a></li>
+          <li class='menu'><a id='menu_font' href="{{ url_for('show_product') }}" style = "color:rgb(26, 42, 17)">Show product</a></li> 
+      </ul>
+    </nav>
+
+    <form class='search' action="{{ url_for('search_keyword', key_search = 'key_search' ) }}" method="POST">
+      <input  type="text" name="key_search" placeholder="검색어를 입력하세요">
+      <input type="submit" value="search">
+    </form>
+
         <br><br>
-        <b class="profile"><font size="6" color="gray">회원가입</font></b>
+        <b class="profile"><font size="6">회원가입</font></b>
         <br><br>
         <form name= "UserInfo" action="{{ url_for('add_user')}}" method="POST">
             <table>
