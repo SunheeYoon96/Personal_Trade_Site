@@ -240,13 +240,14 @@ def add_product():
             db.session.add(product)
             db.session.commit()
 
-            flash('Record was successfully added')
+            #flash('Record was successfully added')
             return redirect(url_for('show_product'))
     return render_template('add_product.html')
 
 @app.route('/show_product')
 def show_product():
-    return render_template('show_product.html', PRODUCT=PRODUCT.query.all())
+    #return render_template('show_product.html', PRODUCT=PRODUCT.query.all())
+    return render_template('show_product.html', PRODUCT=PRODUCT.query.order_by(PRODUCT.productCode.desc()))
     # 06.09 여기에 css 입힌 html 기준으로 'index.html' 쓰시면 메인 페이지에 프로덕트 불러오게 만들었습니다!
 
 ################################
@@ -353,7 +354,7 @@ def following(productSeller):
     follow=follows(session['userID'], productSeller)
     db.session.add(follow)
     db.session.commit()
-    flash('팔로잉을 성공했습니다.')
+    #flash('팔로잉을 성공했습니다.')
     # 팔로잉 결과를 확인할 수 있도록 팔로우 페이지 로드
     return redirect(url_for('follow',productSeller=session['userID']))
 

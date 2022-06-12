@@ -57,10 +57,12 @@
             <br><br><br><br>
         <nav>
             <ul class='category'>                
-                <li class='menu'><a id='menu_font' href="{{ url_for('add_user')  }}" style = "color:rgb(26, 42, 17)">Add user</a></li>
-                <li class='menu'><a id='menu_font' href="{{ url_for('show_user')  }}" style = "color:rgb(26, 42, 17)">Show user</a></li> 
-                <li class='menu'><a id='menu_font' href="{{ url_for('add_product') }}" style = "color:rgb(26, 42, 17)">Add product</a></li>
-                <li class='menu'><a id='menu_font' href="{{ url_for('show_product') }}" style = "color:rgb(26, 42, 17)">Show product</a></li> 
+                <!-- <li class='menu'><a id='menu_font' href="{{ url_for('add_user')  }}" style = "color:rgb(26, 42, 17)">Add user</a></li> -->
+                <!-- <li class='menu'><a id='menu_font' href="{{ url_for('show_user')  }}" style = "color:rgb(26, 42, 17)">Show user</a></li> -->
+                {%if 'userID' in session%} 
+                <li class='menu'><a id='menu_font' href="{{ url_for('add_product') }}" style = "color:rgb(26, 42, 17)">상품등록</a></li>
+                {%endif%} 
+                <li class='menu'><a id='menu_font' href="{{ url_for('show_product') }}" style = "color:rgb(26, 42, 17)">상품보기</a></li> 
             </ul>
         </nav>
 
@@ -73,27 +75,30 @@
             <table border="1">
                 <thead>
                     <tr>
-                        <th>productCode</th>
-                        <th>productName</th>
-                        <th>productPicture</th>
-                        <th>productPrice</th>
-                        <th>productInfo</th>
-                        <th>productState</th>
-                        <th>productSeller</th>
+                        <!-- <th>productCode</th>-->
+                        <th>상품명</th>
+                        <th>상품이미지</th>
+                        <th>가격</th>
+                        <th>상세설명</th>
+                        <th>구매상태</th>
+                        <th>판매자</th>
+                        <th>  </th>
                     </tr>
                 </thead>
 
                 <tbody>
                     {% for product in PRODUCT %}
                     <tr>
-                        <td>{{ product.productCode }}</td>
+                        <!-- <td>{{ product.productCode }}</td> -->
                         <td>{{ product.productName }}</td>
                         <td><img src="{{ url_for('static', filename = '/uploads/' + product.productPicture) }}"></td>
                         <td>{{ product.productPrice }}</td>
                         <td>{{ product.productInfo }}</td>
                         <td>{{ product.productState }}</td>
                         <td><a href="{{ url_for('profile', productSeller = product.productSeller) }}">{{product.productSeller}}</a></td>
+                        {%if 'userID' in session%} 
                         <td><a href="{{ url_for('product_detail', productCode = product.productCode) }}">상세</a></td>
+                        {%endif%}
                     </tr>
                     {% endfor %}
                     

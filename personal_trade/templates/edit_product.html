@@ -21,20 +21,51 @@
     <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
     <!-- 여긴 css 파일 밖으로 만드려면 쓰시고 아니면 <style> 만드셔서 하셔도 됩니다! -->
     <link rel="stylesheet" href="{{ url_for('static', filename = 'index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'add_user.css') }}">
     
     </head>
     
     <body>
-        <form action="{{ url_for('update', productCode = productCode)}}" method="POST" enctype="multipart/form-data">
-            <h3>Student Information</h3>
-            productName<br/>
-            <input type="text" name="productName" value="{{productName}}"><br>
-            productPicture <br>
-            <input type="file" name="productPicture" accept=".jpg, .jpeg, .png, .JPG, .jfif"><br>
-            productPrice <br>
-            <input type="text" name="productPrice" value="{{productPrice}}"><br>
-            productInfo <br>
-            <input type="text" name="productInfo" value="{{productInfo}}"><br>
+        <header>
+            <a href='{{ url_for('index') }}'>
+                    <img class='logo' src="{{ url_for('static', filename = 'logo.png')}}" style="width:500px; height:200px" >
+                </a>
+                <br><br>
+            {%if 'userID' not in session%}
+            <div class='sign_btn'>
+                <input type='button' value='sign up' class='button' onclick="location.href='{{url_for('add_user')}}'">
+                <!-- <input type='button' value='sign in' class='button' onclick="location.href='{{url_for('sign_in')}}'"> -->
+            </div>
+            {%else%}
+            <div>
+                <div class='user_profile'>Welcome! <b>{{session['userID']}}</b>님</div>
+                <input class='logout'type='button' value='log out' onclick="location.href='{{url_for('log_out')}}'">
+            {%endif%}
+            </div>    
+        </header>
+        <br><br><br><br>
+        <nav>
+            <ul class='category'>                
+                <!-- <li class='menu'><a id='menu_font' href="{{ url_for('add_user')  }}" style = "color:rgb(26, 42, 17)">Add user</a></li> -->
+                <!-- <li class='menu'><a id='menu_font' href="{{ url_for('show_user')  }}" style = "color:rgb(26, 42, 17)">Show user</a></li> -->
+                <li class='menu'><a id='menu_font' href="{{ url_for('add_product') }}" style = "color:rgb(26, 42, 17)">상품등록</a></li>
+                <li class='menu'><a id='menu_font' href="{{ url_for('show_product') }}" style = "color:rgb(26, 42, 17)">상품보기</a></li> 
+            </ul>
+        </nav>
+
+        <form action="{{ url_for('update', productCode = productCode)}}" method="POST" enctype="multipart/form-data" style="margin-left: 400px; margin-right: 400px; border-style: groove;">
+            <br>
+            <h2>* 상품명과 이미지를 반드시 넣어주세요 *</h2>
+            <br><br>
+            <h3>Product Information</h3>
+            상품명<br/>
+            <input type="text" name="productName" value="{{productName}} "><br><br>
+            상품이미지 <br>
+            <input type="file" name="productPicture" accept=".jpg, .jpeg, .png, .JPG, .jfif"><br><br>
+            가격 <br>
+            <input type="text" name="productPrice" value="{{productPrice}}"><br><br>
+            상세설명 <br>
+            <input type="text" name="productInfo" value="{{productInfo}}"><br><br>
             <br>
             <input type="submit" value="submit" /><br>
         </form>

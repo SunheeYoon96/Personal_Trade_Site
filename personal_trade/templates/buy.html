@@ -33,10 +33,45 @@
     </script>
     </head>
     <body>
-        <h1>해당 상품을 구매 하시겠습니까?</h1>
-        <a href="{{ url_for('product_detail', productCode = product.productCode) }}"><input type="button" id="btnOk" value="구매" name="productState"/></a>
-        <!-- <input type="button" id="btnOk" value="구매" name="productState"/> -->
-        <a href="{{ url_for('product_detail', productCode = product.productCode) }}"><input type="button" id="btnCancle" value="취소"></a>
+        <header>
+            <a href='{{ url_for('index') }}'>
+                    <img class='logo' src="{{ url_for('static', filename = 'logo.png') }}" style="width:500px; height:200px">
+                </a>
+                <br><br>
+            {%if 'userID' not in session%}
+            <div class='sign_btn'>
+                <input type='button' value='sign up' class='button' onclick="location.href='{{url_for('add_user')}}'">
+                <!-- <input type='button' value='sign in' class='button' onclick="location.href='{{url_for('sign_in')}}'"> -->
+            </div>
+            {%else%}
+            <div>
+                <div class='user_profile'>Welcome! <b>{{session['userID']}}</b>님</div>
+                <input class='logout'type='button' value='log out' onclick="location.href='{{url_for('log_out')}}'">
+            {%endif%}
+            </div>    
+        </header>
+        
+        <h5>
+            <a href="{{ url_for('index') }}">Go to Main</a>
+            <br><br><br><br>
+        <nav>
+            <ul class='category'>                
+                <!-- <li class='menu'><a id='menu_font' href="{{ url_for('add_user')  }}" style = "color:rgb(26, 42, 17)">Add user</a></li> -->
+                <!-- <li class='menu'><a id='menu_font' href="{{ url_for('show_user')  }}" style = "color:rgb(26, 42, 17)">Show user</a></li> -->
+                {%if 'userID' in session%} 
+                <li class='menu'><a id='menu_font' href="{{ url_for('add_product') }}" style = "color:rgb(26, 42, 17)">상품등록</a></li>
+                {%endif%} 
+                <li class='menu'><a id='menu_font' href="{{ url_for('show_product') }}" style = "color:rgb(26, 42, 17)">상품보기</a></li> 
+            </ul>
+        </nav>
+        <br><br>
+
+        <div style="margin-left: 300px;">
+            <h1>해당 상품을 구매 하시겠습니까?</h1>
+            <a href="{{ url_for('product_detail', productCode = product.productCode) }}"><input type="button" id="btnOk" value="구매" name="productState"/></a>
+            <!-- <input type="button" id="btnOk" value="구매" name="productState"/> -->
+            <a href="{{ url_for('product_detail', productCode = product.productCode) }}"><input type="button" id="btnCancle" value="취소"></a>
+        </div>
         
     </body>
 </html>

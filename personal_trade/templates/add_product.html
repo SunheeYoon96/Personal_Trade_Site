@@ -45,26 +45,23 @@
             <ul class='category'>                
                 <li class='menu'><a id='menu_font' href="{{ url_for('add_user')  }}" style = "color:rgb(26, 42, 17)">Add user</a></li>
                 <li class='menu'><a id='menu_font' href="{{ url_for('show_user')  }}" style = "color:rgb(26, 42, 17)">Show user</a></li> 
-                <li class='menu'><a id='menu_font' href="{{ url_for('add_product') }}" style = "color:rgb(26, 42, 17)">Add product</a></li>
-                <li class='menu'><a id='menu_font' href="{{ url_for('show_product') }}" style = "color:rgb(26, 42, 17)">Show product</a></li> 
+                <li class='menu'><a id='menu_font' href="{{ url_for('add_product') }}" style = "color:rgb(26, 42, 17)">상품등록</a></li>
+                <li class='menu'><a id='menu_font' href="{{ url_for('show_product') }}" style = "color:rgb(26, 42, 17)">상품보기</a></li> 
             </ul>
         </nav>
 
-        <form class='search' action="{{ url_for('search_keyword', key_search = 'key_search' ) }}" method="POST">
-            <input  type="text" name="key_search" placeholder="검색어를 입력하세요">
-            <input type="submit" value="search">
-        </form>
             <br><br>
 
-        <form action="{{ url_for('add_product')}}" method="POST" enctype="multipart/form-data" style="margin-left: 100px;">
-            <h3>Product Information</h3>
-            productName<br/>
+        <form action="{{ url_for('add_product')}}" method="POST" enctype="multipart/form-data" style="margin-left: 400px; margin-right: 400px;border-style: groove;">
+            <h3>상품 등록</h3>
+            <p>* 상품 이미지 파일명은 영문과 숫자로만 된 파일로 올려주세요 *</p>
+            상품명<br/>
             <input type="text" name="productName" /><br>
-            productPicture <br>
+            상품이미지 <br>
             <input type="file" name="productPicture" accept=".jpg, .jpeg, .png, .JPG, jfif"><br>
-            productPrice <br>
+            가격 <br>
             <input type="text" name="productPrice"><br>
-            productInfo <br>
+            상세살명 <br>
             <input type="text" name="productInfo"><br>
             <input type="submit" value="submit" /><br>
         </form>
