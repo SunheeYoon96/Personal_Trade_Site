@@ -18,7 +18,7 @@ body {
 .logo{
 	height: 90%;
     width: 20%;
-    left: 15%;
+    left: 25%;
     position: absolute; 
     margin-left: 280px;
     padding: 0;
@@ -64,15 +64,16 @@ body {
 #menu_font{
     font-size: large;
     font-weight: bold;
+    color: black;
 }
 
 table {
-    width: 700px;
+    width: 1200px;
     text-align: center;
     border: 1px solid;
     border-spacing: 1px;
     font-family: 'Cairo', sans-serif;
-  margin: auto;
+    margin: auto;
 }
 
 caption {
@@ -91,6 +92,7 @@ table th {
 }
 
 img {
-    width: 90px;
-    height: 90px;
+    width: 100px;
+    height: 100px;
 }
+

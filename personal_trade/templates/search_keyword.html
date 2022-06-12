@@ -22,27 +22,65 @@
 
 </head>
 <body>
+    <header>
+        <a href='{{ url_for('index') }}'>
+                <img class='logo' src="{{ url_for('static', filename = 'logo.png') }}" style="width:500px; height:200px">
+            </a>
+            <br><br>
+        {%if 'userID' not in session%}
+        <div class='sign_btn'>
+            <input type='button' value='sign up' class='button' onclick="location.href='{{url_for('add_user')}}'">
+            <!-- <input type='button' value='sign in' class='button' onclick="location.href='{{url_for('sign_in')}}'"> -->
+        </div>
+        {%else%}
+        <div>
+            <div class='user_profile'>Welcome! <b>{{session['userID']}}</b>님</div>
+            <input class='logout'type='button' value='log out' onclick="location.href='{{url_for('log_out')}}'">
+        {%endif%}
+        </div>    
+    </header>
     
     <h5>
         <a href="{{ url_for('index') }}">Go to Main</a>
+        <br><br><br><br>
+    <nav>
+        <ul class='category'>                
+            <!-- <li class='menu'><a id='menu_font' href="{{ url_for('add_user')  }}" style = "color:rgb(26, 42, 17)">Add user</a></li> -->
+            <!-- <li class='menu'><a id='menu_font' href="{{ url_for('show_user')  }}" style = "color:rgb(26, 42, 17)">Show user</a></li> -->
+            {%if 'userID' in session%} 
+                <li class='menu'><a id='menu_font' href="{{ url_for('add_product') }}" style = "color:rgb(26, 42, 17)">상품등록</a></li>
+                {%endif%} 
+            <li class='menu'><a id='menu_font' href="{{ url_for('show_product') }}" style = "color:rgb(26, 42, 17)">상품보기</a></li> 
+        </ul>
+    </nav>
+
+    <form class='search' action="{{ url_for('search_keyword', key_search = 'key_search' ) }}" method="POST">
+        <input  type="text" name="key_search" placeholder="검색어를 입력하세요">
+        <input type="submit" value="search">
+    </form>
+    <br><br>
+    
+    <h5>
+        <a href="{{ url_for('show_product') }}">[전체 상품보기]</a>
         <br><br>
         <table border="1">
             <thead>
                 <tr>
-                    <th>productCode</th>
-                    <th>productName</th>
-                    <th>productPicture</th>
-                    <th>productPrice</th>
-                    <th>productInfo</th>
-                    <th>productState</th>
+                    <!-- <th>productCode</th>-->
+                    <th>상품명</th>
+                    <th>상품이미지</th>
+                    <th>가격</th>
+                    <th>상세설명</th>
+                    <th>구매상태</th>
+                    <th>판매자</th>
                 </tr>
             </thead>
             {% for product in search_product %}
             <tbody>
                 <tr>
-                    <td>{{ product.productCode }}</td>
+                    <!-- <td>{{ product.productCode }}</td> -->
                     <td>{{ product.productName }}</td>
-                    <td>{{ product.productPicture }}</td>
+                    <td><img src="{{ url_for('static', filename = '/uploads/' + product.productPicture) }}"></td>
                     <td>{{ product.productPrice }}</td>
                     <td>{{ product.productInfo }}</td>
                     <td>{{ product.productState }}</td>
